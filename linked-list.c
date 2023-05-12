@@ -28,6 +28,26 @@ void list_append(LinkedList *list, int value) {
     return;
 }
 
+void list_remove(LinkedList* list, int pos) {
+    Node* current = list->head;
+    Node* previous = NULL;
+    int i = 0;
+
+    while (current->next && i != pos) {
+        previous = current;
+        current = current->next;
+        ++i;
+    }
+
+    if (i == pos) {
+        if (current->next) {
+            Node* next = current->next;
+            previous->next = next;
+        }
+        free(current);
+    }
+}
+
 void list_print(LinkedList *list) {
     Node* current = list->head;
 
@@ -91,7 +111,7 @@ Node* detect_cycle(LinkedList* list) {
         fast = fast->next;
         prev_fast = fast;
 
-        if (fast->next) {
+        if (fast) {
             fast = fast->next;
         } else break;
 
@@ -110,6 +130,12 @@ int main() {
     for (int i = 1; i <= 10; ++i) {
         list_append(list, i);
     }
+
+    list_print(list);
+
+    list_remove(list, 2);
+    list_remove(list, 4);
+    list_remove(list, 6);
 
     list_print(list);
 
